@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>IMPORTANT</title>
+  <title>💘</title>
+
   <style>
     body {
       background: linear-gradient(135deg, #ffd6e8, #ffeef5);
@@ -22,6 +23,7 @@
       text-align: center;
       box-shadow: 0 15px 40px rgba(0,0,0,0.15);
       max-width: 420px;
+      position: relative;
     }
 
     h2 {
@@ -29,80 +31,109 @@
       line-height: 1.4;
     }
 
+    .buttons {
+      margin-top: 25px;
+      position: relative;
+      height: 60px;
+    }
+
     button {
-      margin: 15px;
       padding: 12px 30px;
       border-radius: 25px;
       border: none;
       font-size: 16px;
       cursor: pointer;
+      position: absolute;
     }
 
     #yes {
       background: #ff5fa2;
       color: white;
+      left: 40px;
     }
 
     #no {
       background: #ddd;
+      left: 180px;
     }
 
     .hidden {
       display: none;
     }
+
+    img {
+      width: 260px;
+      margin-top: 20px;
+      border-radius: 14px;
+    }
   </style>
 </head>
+
 <body>
 
+  <!-- ВОПРОС -->
   <div class="card" id="question">
     <h2>
       <strong>Important question of the day:</strong><br><br>
       Are you free on February 14th<br>
-      to have a nice day with me? 
+      to have a nice day with me? 💖
     </h2>
 
-    <button id="yes">Yes</button>
-    <button id="no" onmouseover="moveNoButton()">No</button>
+    <div class="buttons">
+      <button id="yes">Yes</button>
+      <button id="no">No</button>
+    </div>
   </div>
 
- <div class="card hidden" id="task">
-  <h2>
-    One small mission 😌<br><br>
-    Find the funniest cat you can 🐱<br>
-    and send it to me 💌
-  </h2>
+  <!-- ПОСЛЕ YES -->
+  <div class="card hidden" id="task">
+    <h2>
+      One small mission 😌<br><br>
+      Find the funniest cat you can 🐱<br>
+      and send it to me 💌
+    </h2>
 
-  <img 
-    src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExMDlnejRxd3dyNGtseTJoM21hbWRwZ2o0ZTdvc3hyMGhtd2twNWdvZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/GuDU8r5CnUoYtbS2CR/giphy.gif"
-    alt="cute cat"
-    style="width: 260px; margin-top: 20px; border-radius: 14px;"
-  >
-</div>
+    <img
+      src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3M3d0dDF5MjFlN2lqcG0weWI4dGl6NjY4cDhvazhjY2tuZmdyZjY2MyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/wajo7OrN0AQtJKMoOw/giphy.gif"
+      alt="cute cat"
+    >
   </div>
+
+  <!-- МУЗЫКА -->
+  <audio id="bg-music">
+    <source src="music.mp3" type="audio/mpeg">
+  </audio>
 
   <script>
     const noBtn = document.getElementById("no");
     const yesBtn = document.getElementById("yes");
     const question = document.getElementById("question");
     const task = document.getElementById("task");
+    const music = document.getElementById("bg-music");
 
     function moveNoButton() {
-      const x = Math.random() * (window.innerWidth - 120);
-      const y = Math.random() * (window.innerHeight - 60);
+      const padding = 20;
+      const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+      const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+
+      const x = Math.random() * maxX;
+      const y = Math.random() * maxY;
+
       noBtn.style.left = x + "px";
       noBtn.style.top = y + "px";
     }
 
+    // No убегает ТОЛЬКО при приближении
     noBtn.addEventListener("mouseenter", moveNoButton);
-    noBtn.addEventListener("mousemove", moveNoButton);
 
+    // Yes — магия ✨
     yesBtn.addEventListener("click", () => {
       question.classList.add("hidden");
       task.classList.remove("hidden");
-    });
 
-    // initial random position
-    moveNoButton();
+      music.volume = 0.6;
+      music.play();
+    });
   </script>
 
 </body>
