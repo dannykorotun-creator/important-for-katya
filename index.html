@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>💘</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #ffd6e8, #ffeef5);
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    .card {
+      background: white;
+      padding: 36px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+      max-width: 420px;
+    }
+
+    h2 {
+      font-weight: normal;
+      line-height: 1.4;
+    }
+
+    button {
+      margin: 15px;
+      padding: 12px 30px;
+      border-radius: 25px;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    #yes {
+      background: #ff5fa2;
+      color: white;
+    }
+
+    #no {
+      background: #ddd;
+      position: absolute;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card" id="question">
+    <h2>
+      <strong>Important question of the day:</strong><br><br>
+      Are you free on February 14th<br>
+      to have a nice day with me? 💖
+    </h2>
+
+    <button id="yes">Yes</button>
+    <button id="no">No</button>
+  </div>
+
+  <div class="card hidden" id="task">
+    <h2>
+      One small mission 😌<br><br>
+      Find the funniest cat you can 🐱<br>
+      and send it to me 💌
+    </h2>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById("no");
+    const yesBtn = document.getElementById("yes");
+    const question = document.getElementById("question");
+    const task = document.getElementById("task");
+
+    function moveNoButton() {
+      const x = Math.random() * (window.innerWidth - 120);
+      const y = Math.random() * (window.innerHeight - 60);
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+    }
+
+    noBtn.addEventListener("mouseenter", moveNoButton);
+    noBtn.addEventListener("mousemove", moveNoButton);
+
+    yesBtn.addEventListener("click", () => {
+      question.classList.add("hidden");
+      task.classList.remove("hidden");
+    });
+
+    // initial random position
+    moveNoButton();
+  </script>
+
+</body>
+</html>
