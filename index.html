@@ -13,7 +13,6 @@
       align-items: center;
       height: 100vh;
       margin: 0;
-      overflow: hidden;
     }
 
     .card {
@@ -22,8 +21,9 @@
       border-radius: 20px;
       text-align: center;
       box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-      max-width: 420px;
+      width: 420px;
       position: relative;
+      overflow: hidden; /* КЛЮЧЕВО */
     }
 
     h2 {
@@ -34,7 +34,7 @@
     .buttons {
       margin-top: 25px;
       position: relative;
-      height: 60px;
+      height: 70px;
     }
 
     button {
@@ -49,12 +49,15 @@
     #yes {
       background: #ff5fa2;
       color: white;
-      left: 40px;
+      left: 80px;
+      top: 10px;
     }
 
     #no {
       background: #ddd;
-      left: 180px;
+      left: 200px;
+      top: 10px;
+      transition: left 0.15s ease, top 0.15s ease;
     }
 
     .hidden {
@@ -79,7 +82,7 @@
       to have a nice day with me? 💖
     </h2>
 
-    <div class="buttons">
+    <div class="buttons" id="button-area">
       <button id="yes">Yes</button>
       <button id="no">No</button>
     </div>
@@ -94,7 +97,7 @@
     </h2>
 
     <img
-      src="https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3M3d0dDF5MjFlN2lqcG0weWI4dGl6NjY4cDhvazhjY2tuZmdyZjY2MyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/wajo7OrN0AQtJKMoOw/giphy.gif"
+      src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif"
       alt="cute cat"
     >
   </div>
@@ -110,11 +113,14 @@
     const question = document.getElementById("question");
     const task = document.getElementById("task");
     const music = document.getElementById("bg-music");
+    const area = document.getElementById("button-area");
 
     function moveNoButton() {
-      const padding = 20;
-      const maxX = window.innerWidth - noBtn.offsetWidth - padding;
-      const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+      const areaRect = area.getBoundingClientRect();
+      const btnRect = noBtn.getBoundingClientRect();
+
+      const maxX = areaRect.width - btnRect.width;
+      const maxY = areaRect.height - btnRect.height;
 
       const x = Math.random() * maxX;
       const y = Math.random() * maxY;
@@ -123,10 +129,9 @@
       noBtn.style.top = y + "px";
     }
 
-    // No убегает ТОЛЬКО при приближении
+    // убегает ТОЛЬКО внутри карточки
     noBtn.addEventListener("mouseenter", moveNoButton);
 
-    // Yes — магия ✨
     yesBtn.addEventListener("click", () => {
       question.classList.add("hidden");
       task.classList.remove("hidden");
