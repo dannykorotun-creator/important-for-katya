@@ -13,6 +13,7 @@
       align-items: center;
       height: 100vh;
       margin: 0;
+      overflow: hidden;
     }
 
     .card {
@@ -23,7 +24,7 @@
       box-shadow: 0 15px 40px rgba(0,0,0,0.15);
       width: 420px;
       position: relative;
-      overflow: hidden; /* КЛЮЧЕВО */
+      z-index: 2;
     }
 
     h2 {
@@ -32,7 +33,7 @@
     }
 
     .buttons {
-      margin-top: 25px;
+      margin-top: 30px;
       position: relative;
       height: 70px;
     }
@@ -43,21 +44,21 @@
       border: none;
       font-size: 16px;
       cursor: pointer;
-      position: absolute;
     }
 
     #yes {
       background: #ff5fa2;
       color: white;
-      left: 80px;
-      top: 10px;
     }
 
     #no {
       background: #ddd;
-      left: 200px;
-      top: 10px;
-      transition: left 0.15s ease, top 0.15s ease;
+      position: absolute;
+      left: calc(50% + 40px);
+      top: calc(50% - 15px);
+      z-index: 3;
+      pointer-events: none; /* ❌ нельзя нажать */
+      transition: transform 0.08s linear;
     }
 
     .hidden {
@@ -82,7 +83,7 @@
       to have a nice day with me? 💖
     </h2>
 
-    <div class="buttons" id="button-area">
+    <div class="buttons">
       <button id="yes">Yes</button>
       <button id="no">No</button>
     </div>
@@ -96,10 +97,7 @@
       and send it to me 💌
     </h2>
 
-    <img
-      src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif"
-      alt="cute cat"
-    >
+    <img src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif">
   </div>
 
   <!-- МУЗЫКА -->
@@ -113,24 +111,37 @@
     const question = document.getElementById("question");
     const task = document.getElementById("task");
     const music = document.getElementById("bg-music");
-    const area = document.getElementById("button-area");
 
-    function moveNoButton() {
-      const areaRect = area.getBoundingClientRect();
-      const btnRect = noBtn.getBoundingClientRect();
+    let noX = noBtn.offsetLeft;
+    let noY = noBtn.offsetTop;
 
-      const maxX = areaRect.width - btnRect.width;
-      const maxY = areaRect.height - btnRect.height;
+    document.addEventListener("mousemove", (e) => {
+      const rect = noBtn.getBoundingClientRect();
+      const btnCenterX = rect.left + rect.width / 2;
+      const btnCenterY = rect.top + rect.height / 2;
 
-      const x = Math.random() * maxX;
-      const y = Math.random() * maxY;
+      const dx = e.clientX - btnCenterX;
+      const dy = e.clientY - btnCenterY;
+      const distance = Math.sqrt(dx * dx + dy * dy);
 
-      noBtn.style.left = x + "px";
-      noBtn.style.top = y + "px";
-    }
+      if (distance < 120) {
+        const angle = Math.atan2(dy, dx);
 
-    // убегает ТОЛЬКО внутри карточки
-    noBtn.addEventListener("mouseenter", moveNoButton);
+        const jumpDistance = 140;
+
+        let newX = noX - Math.cos(angle) * jumpDistance;
+        let newY = noY - Math.sin(angle) * jumpDistance;
+
+        // Ограничиваем ВНУТРИ экрана
+        newX = Math.max(10, Math.min(window.innerWidth - 100, newX));
+        newY = Math.max(10, Math.min(window.innerHeight - 50, newY));
+
+        noX = newX;
+        noY = newY;
+
+        noBtn.style.transform = `translate(${noX}px, ${noY}px)`;
+      }
+    });
 
     yesBtn.addEventListener("click", () => {
       question.classList.add("hidden");
